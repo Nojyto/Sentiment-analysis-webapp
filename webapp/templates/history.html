@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction History{% endblock %}
+
+{% block content %}
+<h1>Prediction History</h1>
+<table>
+    <tr>
+        <th>Study Time</th>
+        <th>Failures</th>
+        <th>Absences</th>
+        <th>Age</th>
+        <th>G1</th>
+        <th>Predicted Grade</th>
+        <th>Timestamp</th>
+    </tr>
+    {% for log in logs %}
+    <tr>
+        <td>{{ log.studytime }}</td>
+        <td>{{ log.failures }}</td>
+        <td>{{ log.absences }}</td>
+        <td>{{ log.age }}</td>
+        <td>{{ log.g1 }}</td>
+        <td>{{ log.predicted_grade }}</td>
+        <td>{{ log.timestamp }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<a href="{{ url_for('app.index') }}" class="back-link">Go Back</a>
+{% endblock %}

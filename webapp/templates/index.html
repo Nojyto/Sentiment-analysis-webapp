@@ -1,0 +1,47 @@
+<!-- webapp/templates/index.html -->
+{% extends "base.html" %}
+
+{% block title %}Predict Student's Final Grade{% endblock %}
+
+{% block content %}
+<h1>Predict Student's Final Grade</h1>
+<form action="/predict" method="post">
+    <label for="studytime">Study Time (hours):</label>
+    <input type="number" id="studytime" name="studytime" step="0.5" min="0" max="40" required
+           oninvalid="this.setCustomValidity('Please enter a value between 0 and 40.')"
+           oninput="setCustomValidity('')"
+           value="{{ form_values.studytime if form_values else '' }}"><br>
+
+    <label for="failures">Past Failures:</label>
+    <input type="number" id="failures" name="failures" min="0" max="10" required
+           oninvalid="this.setCustomValidity('Please enter a value between 0 and 10.')"
+           oninput="setCustomValidity('')"
+           value="{{ form_values.failures if form_values else '' }}"><br>
+
+    <label for="absences">Absences:</label>
+    <input type="number" id="absences" name="absences" min="0" max="93" required
+           oninvalid="this.setCustomValidity('Please enter a value between 0 and 93.')"
+           oninput="setCustomValidity('')"
+           value="{{ form_values.absences if form_values else '' }}"><br>
+
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" min="15" max="40" required
+           oninvalid="this.setCustomValidity('Please enter a value between 15 and 40.')"
+           oninput="setCustomValidity('')"
+           value="{{ form_values.age if form_values else '' }}"><br>
+
+    <label for="g1">First Period Grade (0 to 20):</label>
+    <input type="number" id="g1" name="g1" min="0" max="20" required
+           oninvalid="this.setCustomValidity('Please enter a value between 0 and 20.')"
+           oninput="setCustomValidity('')"
+           value="{{ form_values.g1 if form_values else '' }}"><br>
+
+    <button type="submit">Predict Grade</button>
+</form>
+
+{% if prediction is defined and prediction != '' %}
+    <h2>Predicted Final Grade: {{ prediction }}</h2>
+{% endif %}
+
+<a href="{{ url_for('app.history') }}" class="history-link">View Prediction History</a>
+{% endblock %}
