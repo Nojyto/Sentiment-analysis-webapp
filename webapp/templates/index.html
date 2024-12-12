@@ -1,47 +1,40 @@
-<!-- webapp/templates/index.html -->
 {% extends "base.html" %}
 
-{% block title %}Predict Student's Final Grade{% endblock %}
+{% block title %}Predict Sentiment{% endblock %}
 
 {% block content %}
-<h1>Predict Student's Final Grade</h1>
-<form action="/predict" method="post">
-    <label for="studytime">Study Time (hours):</label>
-    <input type="number" id="studytime" name="studytime" step="0.5" min="0" max="40" required
-           oninvalid="this.setCustomValidity('Please enter a value between 0 and 40.')"
-           oninput="setCustomValidity('')"
-           value="{{ form_values.studytime if form_values else '' }}"><br>
+<div class="max-w-lg mx-auto bg-white shadow-lg rounded-lg p-6 mt-10">
+    <h1 class="text-2xl font-bold text-gray-800 text-center mb-6">Predict Sentiment</h1>
+    <form action="/predict" method="post" class="space-y-4">
+        <div>
+            <label for="text_input" class="block text-sm font-medium text-gray-700">Enter Text:</label>
+            <textarea 
+                id="text_input" 
+                name="text_input" 
+                rows="5" 
+                required 
+                class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">{{ form_values.text_input if form_values else '' }}</textarea>
+        </div>
+        <button 
+            type="submit" 
+            class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            Predict Sentiment
+        </button>
+    </form>
 
-    <label for="failures">Past Failures:</label>
-    <input type="number" id="failures" name="failures" min="0" max="10" required
-           oninvalid="this.setCustomValidity('Please enter a value between 0 and 10.')"
-           oninput="setCustomValidity('')"
-           value="{{ form_values.failures if form_values else '' }}"><br>
+    {% if prediction is defined and prediction != '' %}
+        <div class="mt-6 bg-gray-100 p-4 rounded-md">
+            <h2 class="text-lg font-bold text-gray-800 text-center">
+                Predicted Sentiment: 
+                <span class="font-semibold {{ prediction|lower | default('text-gray-700') }}">
+                    {{ prediction }}
+                </span>
+            </h2>
+        </div>
+    {% endif %}
 
-    <label for="absences">Absences:</label>
-    <input type="number" id="absences" name="absences" min="0" max="93" required
-           oninvalid="this.setCustomValidity('Please enter a value between 0 and 93.')"
-           oninput="setCustomValidity('')"
-           value="{{ form_values.absences if form_values else '' }}"><br>
-
-    <label for="age">Age:</label>
-    <input type="number" id="age" name="age" min="15" max="40" required
-           oninvalid="this.setCustomValidity('Please enter a value between 15 and 40.')"
-           oninput="setCustomValidity('')"
-           value="{{ form_values.age if form_values else '' }}"><br>
-
-    <label for="g1">First Period Grade (0 to 20):</label>
-    <input type="number" id="g1" name="g1" min="0" max="20" required
-           oninvalid="this.setCustomValidity('Please enter a value between 0 and 20.')"
-           oninput="setCustomValidity('')"
-           value="{{ form_values.g1 if form_values else '' }}"><br>
-
-    <button type="submit">Predict Grade</button>
-</form>
-
-{% if prediction is defined and prediction != '' %}
-    <h2>Predicted Final Grade: {{ prediction }}</h2>
-{% endif %}
-
-<a href="{{ url_for('app.history') }}" class="history-link">View Prediction History</a>
+    <a href="{{ url_for('app.history') }}" class="block mt-4 text-center text-indigo-600 hover:underline font-semibold">
+        View Prediction History
+    </a>
+</div>
 {% endblock %}

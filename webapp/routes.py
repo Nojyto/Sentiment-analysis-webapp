@@ -1,6 +1,6 @@
-import pandas as pd
 from flask import Blueprint, render_template, request, current_app
 from webapp.models import db, PredictionLog
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 bp = Blueprint('app', __name__)
 
@@ -10,45 +10,28 @@ def index():
 
 @bp.route('/predict', methods=['POST'])
 def predict():
-    studytime = float(request.form['studytime'])
-    failures = int(request.form['failures'])
-    absences = int(request.form['absences'])
-    age = int(request.form['age'])
-    g1 = int(request.form['g1'])
+    text_input = request.form['text_input']
 
-    input_data = pd.DataFrame({
-        'studytime': [studytime],
-        'failures': [failures],
-        'absences': [absences],
-        'age': [age],
-        'G1': [g1]
-    })
-    predicted_grade = current_app.model.predict(input_data)[0]
+    # Preprocess input text using tokenizer
+    tokenizer = current_app.tokenizer
+    max_sequence_length = 100
+    text_seq = tokenizer.texts_to_sequences([text_input])
+    text_pad = pad_sequences(text_seq, maxlen=max_sequence_length, padding='post')
 
+    # Predict sentiment using the neural network model
+    model = current_app.model
+    prediction = model.predict(text_pad)
+    predicted_sentiment = list(current_app.label_map.keys())[prediction.argmax(axis=1)[0]]
+
+    # Log prediction
     log_entry = PredictionLog(
-        studytime=studytime,
-        failures=failures,
-        absences=absences,
-        age=age,
-        g1=g1,
-        predicted_grade=predicted_grade
+        text_input=text_input,
+        predicted_sentiment=predicted_sentiment
     )
     db.session.add(log_entry)
     db.session.commit()
 
-    predicted_grade = max(0, predicted_grade)
-    predicted_grade = min(20, predicted_grade)
-    predicted_grade = round(predicted_grade, 2)
-
-    return render_template('index.html',
-                           prediction=predicted_grade,
-                           form_values={
-                               'studytime': studytime,
-                               'failures': failures,
-                               'absences': absences,
-                               'age': age,
-                               'g1': g1
-                           })
+    return render_template('index.html', prediction=predicted_sentiment, form_values={'text_input': text_input})
 
 @bp.route('/history', methods=['GET'])
 def history():

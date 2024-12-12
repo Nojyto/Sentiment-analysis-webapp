@@ -1,127 +1,31 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f0f2f5 0%, #dfe4ea 100%);
     color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.container {
-    width: 90%;
-    max-width: 700px;
-    margin: 20px auto;
-    padding: 30px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.4s ease;
-}
-
-h1 {
-    text-align: center;
-    font-size: 1.8em;
-    color: #2c3e50;
-    margin-bottom: 20px;
-}
-
-form label, table th {
-    font-weight: bold;
-    color: #555;
-}
-
-form input, form button, table {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 6px;
-    border: 1px solid #ddd;
-}
-
-form input {
-    transition: 0.3s ease;
-}
-
-form input:focus {
-    border-color: #3498db;
-    outline: none;
-    box-shadow: 0 0 5px rgba(50, 115, 220, 0.3);
-}
-
-form button {
-    background-color: #28a745;
-    color: white;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-form button:hover {
-    background-color: #218838;
-}
-
-.history-link, .back-link {
-    display: block;
-    text-align: center;
-    margin-top: 15px;
-    color: #3498db;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-.history-link:hover, .back-link:hover {
-    color: #1d6fa5;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
+.result {
     margin-top: 20px;
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 12px;
     text-align: center;
 }
 
-th {
-    background-color: #3498db;
-    color: #fff;
-    font-weight: 600;
+.prediction {
+    font-weight: bold;
+    text-transform: capitalize;
 }
 
-tr:nth-child(even) {
-    background-color: #f9f9f9;
+.prediction.positive {
+    color: #27ae60;
 }
 
-tr:hover {
-    background-color: #f1f1f1;
-    cursor: pointer;
+.prediction.neutral {
+    color: #f1c40f;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.prediction.negative {
+    color: #e74c3c;
 }
