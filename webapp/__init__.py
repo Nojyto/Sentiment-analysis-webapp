@@ -7,6 +7,7 @@ from tensorflow.keras.models import load_model
 
 def create_app():
     db_path = os.path.abspath("./webapp/instance/log.db")
+    os.makedirs(os.path.dirname(db_path), exist_ok=True)
     model_path = os.path.abspath("./webapp/instance/sentiment_analysis_nn_model.keras")
     tokenizer_path = os.path.abspath("./webapp/instance/tokenizer.pkl")
 
